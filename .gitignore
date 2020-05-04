@@ -22,6 +22,8 @@
 *.map
 *.exp
 
+*.ftpconfig
+
 # Precompiled Headers
 *.gch
 *.pch
