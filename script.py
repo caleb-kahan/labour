@@ -48,7 +48,7 @@ def run(filename):
     #I can iterate through this list later to find the reflective values
     colors = ['red','green','blue']
 
-    print(symbols)
+    #print(symbols)
     for command in commands:
         #pulling all necessary data from commands dictionary
         function = command['op']
