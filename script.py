@@ -47,6 +47,9 @@ def run(filename):
     reflect = '.white'
     #I can iterate through this list later to find the reflective values
     colors = ['red','green','blue']
+    vertices = []
+    polygons = []
+
 
     #print(symbols)
     for command in commands:
@@ -119,6 +122,19 @@ def run(filename):
             matrix_mult( stack[-1], tmp )
             draw_lines(tmp, screen, zbuffer, color)
             tmp = []
+        elif function == "vertex":
+            vertices.append(args[0:3])
+        elif function == "polygon":
+            add_polygon(polygons,vertices[int(args[0])][0],vertices[int(args[0])][1],vertices[int(args[0])][2],
+            vertices[int(args[1])][0],vertices[int(args[1])][1],vertices[int(args[1])][2],
+            vertices[int(args[2])][0],vertices[int(args[2])][1],vertices[int(args[2])][2])
+        elif function == "draw":
+            consts = command['constants']
+            if consts is None:
+                consts = reflect
+            matrix_mult(stack[-1], polygons)
+            draw_polygons(polygons, screen, zbuffer, view, ambient, light,symbols,consts)
+            polygons = []
         elif function == "save":
             save_extension(screen, args[0])
         elif function == "display":

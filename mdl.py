@@ -14,47 +14,53 @@ tokens = (
     "AMBIENT",
     "TORUS",
     "SPHERE",
-    "BOX", 
-    "LINE", 
-    "MESH", 
-    "TEXTURE", 
-    "SET", 
-    "MOVE", 
-    "SCALE", 
-    "ROTATE", 
-    "BASENAME", 
-    "SAVE_KNOBS", 
-    "TWEEN", 
-    "FRAMES", 
-    "VARY", 
-    "PUSH", 
-    "POP", 
-    "SAVE", 
-    "GENERATE_RAYFILES", 
-    "SHADING", 
-    "SHADING_TYPE", 
-    "SET_KNOBS", 
-    "FOCAL", 
-    "DISPLAY", 
-    "SCREEN", 
-    "WEB", 
+    "BOX",
+    "LINE",
+    "VERTEX",
+    "POLYGON",
+    "DRAW",
+    "MESH",
+    "TEXTURE",
+    "SET",
+    "MOVE",
+    "SCALE",
+    "ROTATE",
+    "BASENAME",
+    "SAVE_KNOBS",
+    "TWEEN",
+    "FRAMES",
+    "VARY",
+    "PUSH",
+    "POP",
+    "SAVE",
+    "GENERATE_RAYFILES",
+    "SHADING",
+    "SHADING_TYPE",
+    "SET_KNOBS",
+    "FOCAL",
+    "DISPLAY",
+    "SCREEN",
+    "WEB",
     "CO"
 )
 
 reserved = {
-    "x" : "XYZ", 
-    "y" : "XYZ", 
-    "z" : "XYZ", 
-    "screen" : "SCREEN", 
+    "x" : "XYZ",
+    "y" : "XYZ",
+    "z" : "XYZ",
+    "screen" : "SCREEN",
     "light" : "LIGHT",
     "constants" : "CONSTANTS",
-    "save_coord_system" : "SAVE_COORDS", 
+    "save_coord_system" : "SAVE_COORDS",
     "camera" : "CAMERA",
     "ambient" : "AMBIENT",
     "torus" : "TORUS",
     "sphere" : "SPHERE",
     "box" : "BOX",
     "line" : "LINE",
+    "vertex": "VERTEX",
+    "polygon": "POLYGON",
+    "draw": "DRAW",
     "mesh" : "MESH",
     "texture" : "TEXTURE",
     "set" : "SET",
@@ -239,6 +245,26 @@ def p_command_line(p):
         cmd['cs1'] = p[9]
     if len(p) == 11 and isinstance(p[10], str):
         cmd['cs1'] = p[10]
+    commands.append(cmd)
+
+def p_command_vertex(p):
+    """command : VERTEX NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER"""
+    cmd = {'op' : p[1], 'constants' : None, 'cs0' : None, 'cs1' : None, 'args':[]}
+    cmd['args'] = p[2:5]
+    commands.append(cmd)
+
+def p_command_polygon(p):
+    """command : POLYGON NUMBER NUMBER NUMBER NUMBER"""
+    cmd = {'op' : p[1], 'constants' : None, 'cs0' : None, 'cs1' : None, 'args':[]}
+    cmd['args'] = p[3:6]
+    commands.append(cmd)
+
+def p_command_draw(p):
+    """command : DRAW
+               | DRAW SYMBOL"""
+    cmd = {'op' : p[1], 'constants' : None, 'cs0' : None, 'cs1' : None, 'args':[]}
+    if isinstance(p[2], str):
+        cmd['constants'] = p[2]
     commands.append(cmd)
 
 def p_command_move(p):
